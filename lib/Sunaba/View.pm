@@ -8,13 +8,13 @@ my $layout = sub {
     html {
         head {
             html_link(rel=>'stylesheet', href=>'/static/screen.css');
-            title { "Sunaba [BETA]" };
+            title { "Sunaba: Plack/PSGI on the cloud" };
         };
         body {
             div('.container') {
                 h1('#title') { a(href=>"/") { "Sunaba" } };
                 div('.description') {
-                    "Sunaba runs your Plack/PSGI apps on the sandbox cloud.";
+                    "Sunaba runs your Plack/PSGI apps on the cloud.";
                 };
 
                 div('.mainbody') {
@@ -22,9 +22,9 @@ my $layout = sub {
                     div('#about') {
                         p {
                             outs "Sunaba is an experimental service powered by ";
-                            a(href=>'http://github.com/miyagawa/Twiggy') { "Twiggy" };
-                            outs ", ";
                             a(href=>'http://github.com/miyagawa/Plack') { "Plack" };
+                            outs ", ";
+                            a(href=>'http://github.com/miyagawa/Twiggy') { "Twiggy" };
                             outs " and ";
                             a(href=>'http://github.com/miyagawa/Tatsumaki') { "Tatsumaki" };
                             outs " running on a linode VPS box of ";
