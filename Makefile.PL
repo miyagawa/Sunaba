@@ -1,6 +1,17 @@
 use inc::Module::Install;
 all_from 'lib/Sunaba.pm';
 readme_from('lib/Sunaba.pm');
+requires 'Tatsumaki';
+requires 'AnyEvent::DBI';
+requires 'AnyEvent::DBI::Abstract';
+requires 'DBD::SQLite';
+requires 'Data::Dump';
+requires 'Data::UUID';
+requires 'JSON';
+requires 'MIME::Base64::URLSafe';
+requires 'Markapl';
+requires 'URI::Escape';
+requires 'parent';
 build_requires 'Test::More', 0.88;
 test_requires 'Test::Requires';
 auto_set_repository();
