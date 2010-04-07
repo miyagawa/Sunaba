@@ -23,7 +23,7 @@ sub to_app {
             my $cb = sub {
                 my($dbh, $rows, $rv) = @_;
                 my $row = $rows->[0]
-                    or return $respond->([ 404, [], [] ]);
+                    or return $respond->([ 404, [ "Content-Type", "text/plain" ], [ "Not Found" ] ]);
 
                 my $app  = $db->inflate($row);
                 my $code = $app->compile_runtime($env);
