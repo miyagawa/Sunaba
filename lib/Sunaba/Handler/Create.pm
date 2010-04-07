@@ -22,6 +22,8 @@ sub post {
         user_agent => $self->request->user_agent,
     };
 
+    # TODO specify Tatsumaki::Request to get UTF-8 bytes of 'code'
+
     my $data = {
         id   => gen_random(),
         code => $self->request->parameters->{code},

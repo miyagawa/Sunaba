@@ -6,6 +6,7 @@ has code  => (is => 'rw', isa => 'Str');
 has meta  => (is => 'rw', isa => 'Str');
 has _meta => (is => 'rw', isa => 'HashRef', lazy_build => 1);
 
+use Encode;
 use Data::Dump;
 use JSON;
 
@@ -54,9 +55,14 @@ sub compile_runtime {
     $code .= "my \$_env = " . Data::Dump::pp($env) . ";\n";
     $code .= "\$_env->{'psgi.input'}  = do { open my \$io, '<', \$_env->{'psgi.input'}; \$io };\n";
     $code .= "\$_env->{'psgi.errors'} = \\*STDOUT;\n";
-    $code .= "use JSON;\nprint STDOUT JSON::encode_json(\$_app->(\$_env));";
+    $code .= "use Storable;\nuse MIME::Base64;\nprint STDOUT encode_base64(Storable::nfreeze(\$_app->(\$_env)));";
 
     return $code;
+}
+
+sub ucode {
+    my $self = shift;
+    Encode::decode_utf8($self->code);
 }
 
 1;

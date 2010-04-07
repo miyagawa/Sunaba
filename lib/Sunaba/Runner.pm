@@ -7,6 +7,8 @@ use AnyEvent::HTTP;
 use URI::Escape;
 use JSON;
 use Sunaba::DB;
+use Storable;
+use MIME::Base64;
 
 sub to_app {
     return sub {
@@ -30,8 +32,8 @@ sub to_app {
                     my($body, $hdr) = @_;
                     my $json = ($body =~ /^sunaba\((.*)\);$/s)[0];
                     if ($json) {
-                        my $res = JSON::decode_json($json);
-                        $respond->(JSON::decode_json($res->{stdout}));
+                        my $res = JSON::from_json($json);
+                        $respond->(Storable::thaw(MIME::Base64::decode_base64($res->{stdout})));
                     }
                 };
             };

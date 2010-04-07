@@ -67,7 +67,7 @@ template 'app' => sub {
         };
 
         form(action => '/app/' . $app->id, method=>'post') {
-            textarea(class=>'view',rows=>24, cols=>80,name=>'code') { $app->code };
+            textarea(class=>'view',rows=>24, cols=>80,name=>'code') { $app->ucode };
             if ($app->can_edit($stash->{handler}->request)) {
                 div('#run') {
                     input(type=>'submit', value=>'Update your code');
