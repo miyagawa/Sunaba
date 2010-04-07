@@ -36,7 +36,6 @@ sub to_app {
 
                 http_get $uri, headers => $hdrs, sub {
                     my($body, $hdr) = @_;
-                    warn $body;
                     my $json = ($body =~ /^sunaba\((.*)\);$/s)[0];
                     if ($json) {
                         my $res = JSON::from_json($json);
