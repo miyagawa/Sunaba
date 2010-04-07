@@ -21,12 +21,17 @@ my $layout = sub {
                     outs_raw $content->();
                     div('#about') {
                         p {
-                            outs "Sunaba is an experimental service provided by ";
+                            outs "Sunaba is an experimental service powered by ";
+                            a(href=>'http://github.com/miyagawa/Twiggy') { "Twiggy" };
+                            outs ", ";
+                            a(href=>'http://github.com/miyagawa/Plack') { "Plack" };
+                            outs " and ";
+                            a(href=>'http://github.com/miyagawa/Tatsumaki') { "Tatsumaki" };
+                            outs " running on a linode VPS box of ";
                             a(href=>'http://bulknews.typepad.com/') { "Tatsuhiko Miyagawa" };
-                            outs " on his Linode box. ";
-                            outs "Sandbox perl environment is powered by ";
-                            a(href=>'http://colabv6.dan.co.jp/lleval.html') { "Dan Kogai's lleval Ajax API." };
-                            outs " All services can be shutdown at any time at their own will. NO WARRANTY. Use at your own risk.";
+                            outs ". Sandbox perl environment is powered by ";
+                            a(href=>'http://colabv6.dan.co.jp/lleval.html') { "Dan Kogai's lleval Ajax API" };
+                            outs ". All services can be shutdown at any time at their own will. NO WARRANTY. Use at your own risk.";
                         }
                     }
                 }
