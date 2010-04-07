@@ -1,11 +1,12 @@
 use strict;
 use Sunaba;
 use Sunaba::Runner;
+use Plack::Builder;
 
 my $app = Sunaba->webapp;
 my $run = Sunaba::Runner->to_app;
 
-sub {
+my $wrapped = sub {
     my $env = shift;
 
     if ($env->{HTTP_HOST} eq 'sunaba.plackperl.org') {
@@ -16,6 +17,11 @@ sub {
     } else {
         return [ 404, ["Content-Type", "text/plain"], ["Not Found"] ];
     }
+};
+
+builder {
+    enable "Head";
+    $wrapped;
 };
 
 
