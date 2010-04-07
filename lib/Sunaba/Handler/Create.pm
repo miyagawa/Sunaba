@@ -3,11 +3,14 @@ use strict;
 use parent qw(Tatsumaki::Handler);
 __PACKAGE__->asynchronous(1);
 
-use Digest::SHA1 qw(sha1_hex);
+use Data::UUID;
+use MIME::Base64::URLSafe;
 use JSON;
 
+my $uid = Data::UUID->new;
+
 sub gen_random {
-    sha1_hex(rand(1000) . $$ . {} . time);
+    lc(urlsafe_b64encode($uid->create));
 }
 
 sub post {

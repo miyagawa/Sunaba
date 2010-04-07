@@ -14,14 +14,10 @@ sub to_app {
         return sub {
             my $respond = shift;
 
-            $env->{PATH_INFO} =~ s!^/(\w{40})!!
+            my $id = $env->{'sunaba.app_id'}
                 or return $respond->([ 404, [ "Content-Type", "text/plain" ], [ "Not Found" ] ]);
 
-            my $id = $1;
-            $env->{SCRIPT_NAME} = "/$id";
-
             my $db = Sunaba::DB->new;
-
             my $cb = sub {
                 my($dbh, $rows, $rv) = @_;
                 my $row = $rows->[0]

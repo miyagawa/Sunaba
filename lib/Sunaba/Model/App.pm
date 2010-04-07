@@ -27,7 +27,7 @@ sub new_from_rv {
 
 sub url {
     my $self = shift;
-    "http://sunaba-app.plackperl.org:81/" . $self->id;
+    "http://" . $self->id . ".sunaba-app.plackperl.org/";
 }
 
 sub can_edit {

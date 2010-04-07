@@ -8,10 +8,14 @@ my $run = Sunaba::Runner->to_app;
 sub {
     my $env = shift;
 
-    if ($env->{HTTP_HOST} eq 'sunaba.plackperl.org') {
+    my $host = $env->{HTTP_HOST};
+       $host =~ s/:\d+$//;
+
+    if ($host eq '127.0.0.1') {
         return $app->($env);
-    } elsif ($env->{HTTP_HOST} =~ /^([\w\-]+)\.sunaba-app.plackperl\.org/) {
+    } elsif ($host eq 'localhost' && $env->{PATH_INFO} =~ s!/([\w\-]+)!!) {
         $env->{'sunaba.app_id'} = $1;
+        $env->{SCRIPT_NAME} = "/$1";
         return $run->($env);
     } else {
         return [ 404, ["Content-Type", "text/plain"], ["Not Found"] ];
