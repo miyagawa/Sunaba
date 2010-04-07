@@ -27,13 +27,14 @@ my $layout = sub {
                             a(href=>'http://github.com/miyagawa/Twiggy') { "Twiggy" };
                             outs " and ";
                             a(href=>'http://github.com/miyagawa/Tatsumaki') { "Tatsumaki" };
-                            outs " running on a VPS box of ";
+                            outs " (Oh, and it's ";
+                            a(href=>"http://github.com/miyagawa/Sunaba") { "open source" };
+                            outs ") running on a VPS box of ";
                             a(href=>'http://bulknews.typepad.com/') { "Tatsuhiko Miyagawa" };
                             outs ". Sandbox perl environment is powered by ";
                             a(href=>'http://colabv6.dan.co.jp/lleval.html') { "Dan Kogai's lleval Ajax API" };
                             outs " and all restrictions apply. Services can be interrupted, shutdown or blocked at any time at their own will. ";
-                            outs "NO WARRANTY. Use at your own risk. Oh, and it's ";
-                            a(href=>"http://github.com/miyagawa/Sunaba") { "open source." };
+                            outs "NO WARRANTY. Use at your own risk.";
                         }
                     }
                 }
