@@ -33,7 +33,11 @@ sub to_app {
                     my $json = ($body =~ /^sunaba\((.*)\);$/s)[0];
                     if ($json) {
                         my $res = JSON::from_json($json);
-                        $respond->(Storable::thaw(MIME::Base64::decode_base64($res->{stdout})));
+                        if ($res->{status} > 0) {
+                            $respond->([ 500, [ "Content-Type", "text/plain" ], [ $res->{stderr} ] ]);
+                        } else {
+                            $respond->(Storable::thaw(MIME::Base64::decode_base64($res->{stdout})));
+                        }
                     }
                 };
             };
