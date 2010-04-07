@@ -8,13 +8,13 @@ my $layout = sub {
     html {
         head {
             html_link(rel=>'stylesheet', href=>'/static/screen.css');
-            title { "Sunaba: Plack/PSGI on the cloud" };
+            title { "Sunaba: Plack/PSGI in the cloud" };
         };
         body {
             div('.container') {
                 h1('#title') { a(href=>"/") { "Sunaba" } };
                 div('.description') {
-                    "Sunaba runs your Plack/PSGI apps on the cloud.";
+                    "Sunaba runs your Plack/PSGI apps in the cloud.";
                 };
 
                 div('.mainbody') {
