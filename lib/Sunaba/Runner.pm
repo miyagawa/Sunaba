@@ -27,9 +27,16 @@ sub to_app {
 
                 my $app  = $db->inflate($row);
                 my $code = $app->compile_runtime($env);
+                my $uri  = "http://api.dan.co.jp/lleval.cgi?c=sunaba&s=" . URI::Escape::uri_escape($code);
 
-                http_get "http://api.dan.co.jp/lleval.cgi?c=sunaba&s=" . URI::Escape::uri_escape($code), sub {
+                my $hdrs = {
+                    'User-Agent' => "Sunaba/$Sunaba::VERSION",
+                    'X-Forwarded-For' => $env->{REMOTE_ADDR},
+                };
+
+                http_get $uri, headers => $hdrs, sub {
                     my($body, $hdr) = @_;
+                    warn $body;
                     my $json = ($body =~ /^sunaba\((.*)\);$/s)[0];
                     if ($json) {
                         my $res = JSON::from_json($json);
