@@ -2,6 +2,8 @@ use strict;
 use Sunaba;
 use Sunaba::Runner;
 
+$ENV{SUNABA_DEV} = 1;
+
 my $app = Sunaba->webapp;
 my $run = Sunaba::Runner->to_app;
 

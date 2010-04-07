@@ -28,7 +28,12 @@ sub new_from_rv {
 
 sub url {
     my $self = shift;
-    "http://" . $self->id . ".sunaba-app.plackperl.org/";
+
+    if ($ENV{SUNABA_DEV}) {
+        return "http://localhost:5000/" . $self->id;
+    } else {
+        return "http://" . $self->id . ".sunaba-app.plackperl.org/";
+    }
 }
 
 sub can_edit {
