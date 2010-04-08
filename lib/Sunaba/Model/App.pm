@@ -68,7 +68,7 @@ sub compile_runtime {
 sub unpack_use {
     my($self, $code) = @_;
 
-    my @modules = $code =~ m/^use (\S+).*?;\s*#\s*sunaba/mg;
+    my @modules = $code =~ m/^\s*use (\S+).*?;\s*#.*sunaba/mgi;
 
     if (@modules) {
         my $loader = "BEGIN {\nuse LWP::Simple ();\n";
