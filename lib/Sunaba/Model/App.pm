@@ -68,19 +68,13 @@ sub compile_runtime {
 sub unpack_use {
     my($self, $code) = @_;
 
-    my @modules;
-    $code =~ s{^use (\S+)(\s*\S+)?;\s*#\s*sunaba}{ push @modules, [ $1, $2 ]; "" }eg;
+    my @modules = $code =~ m/^use (\S+).*?;\s*#\s*sunaba/mg;
 
     if (@modules) {
         my $loader = "BEGIN {\nuse LWP::Simple ();\n";
         for my $module (@modules) {
-            (my $dist = $module->[0]) =~ s/::/-/g;
+            (my $dist = $module) =~ s/::/-/g;
             $loader .= qq{eval(LWP::Simple::get("http://sunaba.plackperl.org/packed/$dist"));};
-            if ($module->[1]) {
-                $loader .= "use $module->[0] $module->[1];\n";
-            } else {
-                $loader .= "use $module->[0];\n";
-            }
         }
         $loader .= "}\n";
         $code = $loader . $code;
