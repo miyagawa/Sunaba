@@ -41,20 +41,20 @@ sub to_app {
                         return $respond->([ 502, ["Content-Type", "text/plain"], [ "Bad gateway: $hdr->{Status}" ] ]);
                     }
 
-                    my $json = ($body =~ /^sunaba\((.*)\);$/s)[0];
-                    if ($json) {
-                        my $res = JSON::from_json($json);
-                        if ($res->{status} == 65280) {
-                            $respond->([ 500, [ "Content-Type", "text/plain" ], [ $res->{stderr} ] ]);
-                        } elsif ($res->{error}) {
-                            $respond->([ 500, [ "Content-Type", "text/plain" ], [ $res->{error} ] ]);
+                    my $json = ($body =~ /^sunaba\((.*)\);$/s)[0]
+                        or return $respond->([ 502, [ "Content-Type", "text/plain" ], [ "Bad gateway" ] ]);
+
+                    my $res = JSON::from_json($json);
+                    if ($res->{status} == 65280) {
+                        $respond->([ 500, [ "Content-Type", "text/plain" ], [ $res->{stderr} ] ]);
+                    } elsif ($res->{error}) {
+                        $respond->([ 500, [ "Content-Type", "text/plain" ], [ $res->{error} ] ]);
+                    } else {
+                        my $res = Storable::thaw(MIME::Base64::decode_base64($res->{stdout}));
+                        if (ref $res eq 'ARRAY') {
+                            $respond->($res);
                         } else {
-                            my $res = Storable::thaw(MIME::Base64::decode_base64($res->{stdout}));
-                            if (ref $res eq 'ARRAY') {
-                                $respond->($res);
-                            } else {
-                                $respond->([ 500, [ "Content-Type", "text/plain" ], [ "Bad response: $res" ] ]);
-                            }
+                            $respond->([ 500, [ "Content-Type", "text/plain" ], [ "Bad response: $res" ] ]);
                         }
                     }
                 };
