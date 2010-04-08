@@ -17,9 +17,9 @@ sub webapp {
     my $class = shift;
 
     my $app = Tatsumaki::Application->new([
-        '/create'        => h '::Create',
-        '/app/([\w\-]+)' => h '::Edit',
-        qr'^/$'          => h '::Root',
+        '/create'           => h '::Create',
+        '/app/([\w\-]+)'    => h '::Edit',
+        qr'^/$'             => h '::Root',
     ]);
 
     $app->add_service(db => Sunaba::DB->new);

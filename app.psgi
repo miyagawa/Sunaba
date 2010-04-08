@@ -1,11 +1,12 @@
 use strict;
 use Sunaba;
 use Sunaba::Runner;
+use Plack::Builder;
 
 my $app = Sunaba->webapp;
 my $run = Sunaba::Runner->to_app;
 
-sub {
+my $wrapped = sub {
     my $env = shift;
 
     if ($env->{HTTP_HOST} eq 'sunaba.plackperl.org') {
@@ -18,6 +19,7 @@ sub {
     }
 };
 
-
-
-
+builder {
+    enable "Static", path => sub { s!^/packed/!fatpacked/! };
+    $wrapped;
+};

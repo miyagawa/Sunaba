@@ -56,13 +56,35 @@ sub compile_runtime {
     }
 
     my $code = "#!/usr/bin/perl\n";
-    $code .= "my \$_app = do { " . $self->code . "};\n";
+    $code .= "my \$_app = do { " . $self->unpack_use($self->code) . "};\n";
     $code .= "my \$_env = " . Data::Dump::pp($env) . ";\n";
     $code .= "\$_env->{'psgi.input'}  = do { open my \$io, '<', \$_env->{'psgi.input'}; \$io };\n";
     $code .= "\$_env->{'psgi.errors'} = \\*STDOUT;\n";
     $code .= "use Storable;\nuse MIME::Base64;\nprint STDOUT encode_base64(Storable::nfreeze(\$_app->(\$_env)));";
 
     return $code;
+}
+
+sub unpack_use {
+    my($self, $code) = @_;
+
+    my @modules;
+    $code =~ s{^use (\S+)(\s*\S+)?;\s*#\s*sunaba}{ push @modules, [ $1, $2 ]; "" }eg;
+
+    if (@modules) {
+        my $loader = "BEGIN {\nuse LWP::Simple ();\n";
+        for my $module (@modules) {
+            $module->[0] =~ s/::/-/g;
+            $loader .= qq{eval(LWP::Simple::get("http://sunaba.plackperl.org/packed/$module->[0]"));\n};
+            if ($module->[1]) {
+                $loader .= $module->[0] . "->import($module->[1]);\n";
+            }
+        }
+        $loader .= "}\n";
+        $code = $loader . $code;
+    }
+
+    $code;
 }
 
 sub ucode {

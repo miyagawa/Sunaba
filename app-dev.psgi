@@ -1,13 +1,14 @@
 use strict;
 use Sunaba;
 use Sunaba::Runner;
+use Plack::Builder;
 
 $ENV{SUNABA_DEV} = 1;
 
 my $app = Sunaba->webapp;
 my $run = Sunaba::Runner->to_app;
 
-sub {
+my $wrapped = sub {
     my $env = shift;
 
     my $host = $env->{HTTP_HOST};
@@ -22,6 +23,11 @@ sub {
     } else {
         return [ 404, ["Content-Type", "text/plain"], ["Not Found"] ];
     }
+};
+
+builder {
+    enable "Static", path => sub { s!^/packed/!fatpacked/! };
+    $wrapped;
 };
 
 
