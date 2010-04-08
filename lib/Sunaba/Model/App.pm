@@ -75,9 +75,11 @@ sub unpack_use {
         my $loader = "BEGIN {\nuse LWP::Simple ();\n";
         for my $module (@modules) {
             $module->[0] =~ s/::/-/g;
-            $loader .= qq{eval(LWP::Simple::get("http://sunaba.plackperl.org/packed/$module->[0]"));\n};
+            $loader .= qq{eval(LWP::Simple::get("http://sunaba.plackperl.org/packed/$module->[0]"));};
             if ($module->[1]) {
-                $loader .= $module->[0] . "->import($module->[1]);\n";
+                $loader .= "use $module->[0] $module->[1];\n";
+            } else {
+                $loader .= "use $module->[0];\n";
             }
         }
         $loader .= "}\n";
