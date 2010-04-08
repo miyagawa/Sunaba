@@ -38,7 +38,7 @@ sub to_app {
                     my($body, $hdr) = @_;
 
                     if ($hdr->{Status} =~ /^[45]/) {
-                        return $respond->([ 502, ["Content-Type", "text/plain"], [ "Bad gateway: $hdr->{Status}" ] ]);
+                        return $respond->([ 502, ["Content-Type", "text/plain"], [ "Bad gateway: $hdr->{Status} $hdr->{Reason}" ] ]);
                     }
 
                     my $json = ($body =~ /^sunaba\((.*)\);$/s)[0]
