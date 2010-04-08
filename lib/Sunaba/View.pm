@@ -46,6 +46,7 @@ my $layout = sub {
 template 'index' => sub {
     my $skelton_app = <<APP;
 my \$app = sub {
+    my \$env = shift;
     [ 200, [ "Content-Type", "text/plain" ], [ "Hello World" ] ];
 };
 APP
