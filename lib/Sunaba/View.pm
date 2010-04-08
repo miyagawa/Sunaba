@@ -17,7 +17,7 @@ my $layout = sub {
                     "Sunaba runs your Plack/PSGI apps in the cloud.";
                 };
                 div('.error') {
-                    "4/8 12pm PDT: Due to the massive traffic, the backend is tentatively blocking us. Sorry for the inconvenience.";
+                    "4/8 12pm PDT: Due to the massive traffic, some requests might get blocked. Sorry for the inconvenience.";
                 };
 
                 div('.mainbody') {
