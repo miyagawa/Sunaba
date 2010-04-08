@@ -33,7 +33,7 @@ my $layout = sub {
                             a(href=>'http://bulknews.typepad.com/') { "Tatsuhiko Miyagawa" };
                             outs ". Sandbox perl environment is powered by ";
                             a(href=>'http://colabv6.dan.co.jp/lleval.html') { "Dan Kogai's lleval Ajax API" };
-                            outs " and all restrictions apply. Services can be interrupted, shutdown or blocked at any time at their own will. ";
+                            outs " and all of its restrictions apply. Services can be interrupted, shutdown or blocked at any time at their own will. ";
                             outs "NO WARRANTY. Use at your own risk.";
                         }
                     }

@@ -34,8 +34,13 @@ sub to_app {
                     'X-Forwarded-For' => $env->{REMOTE_ADDR},
                 };
 
-                http_get $uri, headers => $hdrs, sub {
+                http_get $uri, headers => $hdrs, timeout => 3, sub {
                     my($body, $hdr) = @_;
+
+                    if ($hdr->{Status} =~ /^[45]/) {
+                        return $respond->([ 502, ["Content-Type", "text/plain"], [ "Bad gateway: $hdr->{Status}" ] ]);
+                    }
+
                     my $json = ($body =~ /^sunaba\((.*)\);$/s)[0];
                     if ($json) {
                         my $res = JSON::from_json($json);
@@ -44,7 +49,12 @@ sub to_app {
                         } elsif ($res->{error}) {
                             $respond->([ 500, [ "Content-Type", "text/plain" ], [ $res->{error} ] ]);
                         } else {
-                            $respond->(Storable::thaw(MIME::Base64::decode_base64($res->{stdout})));
+                            my $res = Storable::thaw(MIME::Base64::decode_base64($res->{stdout}));
+                            if (ref $res eq 'ARRAY') {
+                                $respond->($res);
+                            } else {
+                                $respond->([ 500, [ "Content-Type", "text/plain" ], [ "Bad response: $res" ] ]);
+                            }
                         }
                     }
                 };
