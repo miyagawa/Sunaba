@@ -11,8 +11,8 @@ my $uid = Data::UUID->new;
 
 sub gen_random {
     my $b64 = urlsafe_b64encode($uid->create);
-    $b64 =~ s/^_+//;
-    $b64 =~ s/_+$//;
+    $b64 =~ s/^[_\-]+//;
+    $b64 =~ s/[_\-]+$//;
     $b64 =~ tr/_/-/;
     lc $b64;
 }
