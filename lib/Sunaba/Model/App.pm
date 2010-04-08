@@ -47,8 +47,10 @@ sub compile_runtime {
 
     my $input = $env->{'psgi.input'};
 
-    local $env->{'psgi.streaming'} = '';
-    local $env->{'psgix.io'} = undef;
+    local $env->{'psgi.streaming'}   = '';
+    local $env->{'psgi.nonblocking'} = '';
+    local $env->{'psgi.run_once'}    = 1;
+    local $env->{'psgix.io'}         = undef;
     local $env->{'psgi.input'};
 
     # make psgi.input a raw string - revert it to a handle on the server side
@@ -64,7 +66,8 @@ sub compile_runtime {
     my $code = "#!/usr/bin/perl\n";
     $code .= "my \$_app = do { " . $self->unpack_use($self->code) . "};\n";
     $code .= "my \$_env = " . Data::Dump::pp($env) . ";\n";
-    $code .= "\$_env->{'psgi.input'}  = do { open my \$io, '<', \$_env->{'psgi.input'}; \$io };\n";
+    $code .= "my \$_input = \$_env->{'psgi.input'};\n";
+    $code .= "\$_env->{'psgi.input'}  = do { open my \$io, '<', \\\$_input; \$io };\n";
     $code .= "\$_env->{'psgi.errors'} = \\*STDOUT;\n";
     $code .= "use Storable;\nuse MIME::Base64;\nprint STDOUT encode_base64(Storable::nfreeze(\$_app->(\$_env)));";
 
