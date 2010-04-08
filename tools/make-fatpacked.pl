@@ -5,7 +5,7 @@ my $module = shift or die $!;
 (my $pkg = $module) =~ s/::/-/g;
 
 open my $script, ">fp.pl";
-print $script "use $module;";
+print $script "use $module ();";
 close $script;
 
 system "fatpack trace fp.pl";

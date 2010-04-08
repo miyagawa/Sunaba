@@ -45,10 +45,10 @@ sub to_app {
                         or return $respond->([ 502, [ "Content-Type", "text/plain" ], [ "Bad gateway" ] ]);
 
                     my $res = JSON::from_json($json);
-                    if ($res->{status} == 65280) {
-                        $respond->([ 500, [ "Content-Type", "text/plain" ], [ $res->{stderr} ] ]);
-                    } elsif ($res->{error}) {
+                    if ($res->{error}) {
                         $respond->([ 500, [ "Content-Type", "text/plain" ], [ $res->{error} ] ]);
+                    } elsif ($res->{status} > 0) {
+                        $respond->([ 500, [ "Content-Type", "text/plain" ], [ $res->{stderr} ] ]);
                     } else {
                         my $res = Storable::thaw(MIME::Base64::decode_base64($res->{stdout}));
                         if (ref $res eq 'ARRAY') {
