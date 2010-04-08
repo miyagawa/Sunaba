@@ -45,10 +45,16 @@ sub can_edit {
 sub compile_runtime {
     my($self, $env) = @_;
 
+    my $input = $env->{'psgi.input'};
+
+    local $env->{'psgi.streaming'} = '';
+    local $env->{'psgix.io'} = undef;
+    local $env->{'psgi.input'};
+
     # make psgi.input a raw string - revert it to a handle on the server side
     if ($env->{CONTENT_LENGTH}) {
         $env->{'psgi.input'} = do {
-            $env->{'psgi.input'}->read(my($content), $env->{CONTENT_LENGTH}, 0);
+            $input->read(my($content), $env->{CONTENT_LENGTH}, 0);
             $content;
         };
     } else {
