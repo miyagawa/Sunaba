@@ -16,10 +16,6 @@ my $layout = sub {
                 div('.description') {
                     "Sunaba runs your Plack/PSGI apps in the cloud.";
                 };
-                div('.error') {
-                    "4/8 12pm PDT: Due to the massive traffic, some requests might get blocked. Sorry for the inconvenience.";
-                };
-
                 div('.mainbody') {
                     outs_raw $content->();
                     div('#about') {
